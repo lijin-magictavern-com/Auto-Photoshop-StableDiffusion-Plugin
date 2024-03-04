@@ -1,5 +1,5 @@
 {
-    "id": "auto.photoshop.stable.diffusion.plugin",
+    "id": "auto.photoshop.stable.diffusion.mt.plugin",
     "name": "Auto Photoshop Stable Diffusion Plugin",
     "version": "1.4.1",
     "host": {
