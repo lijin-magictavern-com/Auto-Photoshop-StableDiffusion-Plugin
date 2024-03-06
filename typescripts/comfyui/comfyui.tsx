@@ -528,7 +528,7 @@ function renderNode(node_id: string, node: any, is_output: boolean) {
             const input = comfy_node_info.input.required[name]
 
             let { type, config } = util.parseComfyInput(name, input, value)
-            if (type === ComfyInputType.Skip || node?._meta.hidden) {
+            if (type === ComfyInputType.Skip || node?._meta?.hidden) {
                 return (
                     <div
                         key={`${node_id}_${name}_${type}_${index}`}
