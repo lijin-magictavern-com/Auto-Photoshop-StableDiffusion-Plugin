@@ -1023,7 +1023,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <sp-textfield
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     // key={key ?? void 0}
                     type="text"
                     // placeholder="cute cats"
@@ -1039,27 +1039,14 @@ function renderInput(
                     style={{
                         width: '26px',
                     }}
-                    className="btnSquare"
+                    className="btnSquare refreshButton"
                     onClick={() => {
-                        inputs[name] = (
-                            BigInt(inputs[name]) - BigInt(1)
+                        inputs[name] = util.getRandomBigIntApprox(
+                            0n,
+                            18446744073709552000n
                         ).toString()
                     }}
                 >
-                    {'<'}
-                </button>
-                <button
-                    style={{
-                        width: '26px',
-                    }}
-                    className="btnSquare"
-                    onClick={() => {
-                        inputs[name] = (
-                            BigInt(inputs[name]) + BigInt(1)
-                        ).toString()
-                    }}
-                >
-                    {'>'}
                 </button>
                 <sp-checkbox
                     title="randomize seed before generation"
@@ -1067,7 +1054,7 @@ function renderInput(
                     onClick={(evt: any) => {
                         store.data.is_random_seed[node_id] = evt.target.checked
                     }}
-                    style={{ display: 'inline-flex' }}
+                    style={{ display: 'inline-flex',marginLeft: '5px' }}
                 >
                     random
                 </sp-checkbox>
