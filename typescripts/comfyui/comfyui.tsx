@@ -528,7 +528,7 @@ function renderNode(node_id: string, node: any, is_output: boolean) {
             const input = comfy_node_info.input.required[name]
 
             let { type, config } = util.parseComfyInput(name, input, value)
-            if (type === ComfyInputType.Skip) {
+            if (type === ComfyInputType.Skip || node?._meta.hidden) {
                 return (
                     <div
                         key={`${node_id}_${name}_${type}_${index}`}
@@ -1023,7 +1023,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <sp-textfield
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     // key={key ?? void 0}
                     type="text"
                     // placeholder="cute cats"
@@ -1078,7 +1078,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <sp-textfield
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     // key={key ?? void 0}
                     type="text"
                     // placeholder="cute cats"
@@ -1097,7 +1097,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <SpTextfield
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     type="text"
                     // value={config.default}
                     value={inputs[name]}
@@ -1118,7 +1118,7 @@ function renderInput(
         html_element = (
             <SpSliderWithLabel
                 // key={key ?? void 0}
-                disabled={store.data.can_edit_nodes ? true : void 0}
+                disabled={store.data.can_edit_nodes || name !== 'denoise' ? true : void 0}
                 show-value={false}
                 steps={config?.step ?? 1}
                 out_min={config?.min ?? 0}
@@ -1145,7 +1145,7 @@ function renderInput(
                     {name}
                 </sp-label>
                 <SpMenu
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     size="m"
                     title={inputs[name]}
                     items={config}
@@ -1194,7 +1194,7 @@ function renderInput(
                 <sp-label slot="label">{name}:</sp-label>
 
                 <SpTextfield
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     type="text"
                     // value={config.default}
                     value={inputs[name]}
@@ -1211,7 +1211,7 @@ function renderInput(
                 {/* <sp-label slot="label">{name}:</sp-label> */}
 
                 <sp-checkbox
-                    disabled={store.data.can_edit_nodes ? true : void 0}
+                    disabled={true}
                     title={name}
                     // value={inputs[name]}
                     checked={inputs[name] ? true : void 0}
@@ -1338,7 +1338,7 @@ function loadWorkflow2(workflow: any) {
             ) {
                 // store.data.sync_from_canvas[node_id] = true
                 store.data.loadImage_loading_method[node_id] = {
-                    method: 'Manual',
+                    method: 'Sync From Whole Canvas',
                 }
             }
         }
@@ -2000,7 +2000,7 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                                                         }}
                                                     >
                                                         {
-                                                            store.data
+                                                            node?._meta?.title || store.data
                                                                 .nodes_label[
                                                                 node_id
                                                             ]
