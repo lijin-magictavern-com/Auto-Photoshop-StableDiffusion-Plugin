@@ -1065,7 +1065,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <sp-textfield
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     // key={key ?? void 0}
                     type="text"
                     // placeholder="cute cats"
@@ -1084,7 +1084,7 @@ function renderInput(
             <>
                 <sp-label slot="label">{name}:</sp-label>
                 <SpTextfield
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     type="text"
                     // value={config.default}
                     value={inputs[name]}
@@ -1105,7 +1105,7 @@ function renderInput(
         html_element = (
             <SpSliderWithLabel
                 // key={key ?? void 0}
-                disabled={store.data.can_edit_nodes || name !== 'denoise' ? true : void 0}
+                disabled={store.data.can_edit_nodes ? true : void 0}
                 show-value={false}
                 steps={config?.step ?? 1}
                 out_min={config?.min ?? 0}
@@ -1132,7 +1132,7 @@ function renderInput(
                     {name}
                 </sp-label>
                 <SpMenu
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     size="m"
                     title={inputs[name]}
                     items={config}
@@ -1181,7 +1181,7 @@ function renderInput(
                 <sp-label slot="label">{name}:</sp-label>
 
                 <SpTextfield
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     type="text"
                     // value={config.default}
                     value={inputs[name]}
@@ -1198,7 +1198,7 @@ function renderInput(
                 {/* <sp-label slot="label">{name}:</sp-label> */}
 
                 <sp-checkbox
-                    disabled={true}
+                    disabled={store.data.can_edit_nodes ? true : void 0}
                     title={name}
                     // value={inputs[name]}
                     checked={inputs[name] ? true : void 0}
