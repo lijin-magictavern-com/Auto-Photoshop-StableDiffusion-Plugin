@@ -42,13 +42,13 @@ export interface ComfyUINode {
 // Assuming the json files are in a directory named 'native_workflows'
 const dir = 'plugin:/typescripts/comfyui/native_workflows' // specify the directory containing the .json files
 let workflows2: Record<string, any> = {}
-readdirSync(dir).forEach((file) => {
-    if (file.endsWith('.json')) {
-        const fileContent = readFileSync(`${dir}/${file}`, 'utf8')
-        const fileNameWithoutExtension = file.slice(0, -5)
-        workflows2[fileNameWithoutExtension] = JSON.parse(fileContent)
-    }
-})
+// readdirSync(dir).forEach((file) => {
+//     if (file.endsWith('.json')) {
+//         const fileContent = readFileSync(`${dir}/${file}`, 'utf8')
+//         const fileNameWithoutExtension = file.slice(0, -5)
+//         workflows2[fileNameWithoutExtension] = JSON.parse(fileContent)
+//     }
+// })
 
 export const store = new AStore({
     comfyui_valid_nodes: {} as any, // comfyui nodes like structure that contain all info necessary to create plugin ui elements

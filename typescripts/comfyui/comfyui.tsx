@@ -1810,7 +1810,7 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                                     }
 
                                     store.data.workflows2 = {
-                                        // ...store.data.workflows2,
+                                        ...store.data.workflows2,
                                         ...store.data.user_custom_workflow,
                                     }
                                 }
