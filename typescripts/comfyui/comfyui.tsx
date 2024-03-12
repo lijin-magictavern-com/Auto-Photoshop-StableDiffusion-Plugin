@@ -528,7 +528,7 @@ function renderNode(node_id: string, node: any, is_output: boolean) {
             const input = comfy_node_info.input.required[name]
 
             let { type, config } = util.parseComfyInput(name, input, value)
-            if (type === ComfyInputType.Skip || node?._meta?.hidden) {
+            if (type === ComfyInputType.Skip) {
                 return (
                     <div
                         key={`${node_id}_${name}_${type}_${index}`}
@@ -1830,6 +1830,17 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                                 .getNodes(store.data.current_prompt2)
                                 .sort(
                                     ([node_id1, node1], [node_id2, node2]) => {
+                                        if (node1?._meta?.title && (node1._meta.title).toLowerCase().includes('sort') && node2?._meta?.title && (node2._meta.title).toLowerCase().includes('sort')) {
+                                            let match1 = (node1._meta.title).match(/[S|s]ort(\d+)/)
+                                            let match2 = (node2._meta.title).match(/[S|s]ort(\d+)/)
+                                            if (match1 && match2) {
+                                                return Number(match1[1]) - Number(match2[1])
+                                            }
+                                        } else if (node1?._meta?.title && (node1._meta.title).toLowerCase().includes('sort')) {
+                                            return -1
+                                        } else if (node2?._meta?.title && (node2._meta.title).toLowerCase().includes('sort')) {
+                                            return 1
+                                        }
                                         return (
                                             store.data.nodes_order.indexOf(
                                                 node_id1
@@ -1847,6 +1858,11 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                                             store.data.object_info[
                                                 node.class_type
                                             ].output_node
+                                        if (!node._meta || (node._meta && !node._meta.title) || (node?._meta?.title && !(node._meta.title).toLowerCase().includes('sort'))) {
+                                            return (
+                                                ''
+                                            )
+                                        }
                                         return (
                                             <div
                                                 key={`node_${node_id}_${index}`}
