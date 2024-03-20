@@ -101,11 +101,25 @@ export async function workflowEntries() {
     try {
         const workflow_folder = await storage.localFileSystem.getFolder()
 
-        let entries = await workflow_folder.getEntries()
-        const workflow_entries = entries.filter(
-            // (e: any) => e.isFile && e.name.toLowerCase().includes('.png') // must be a file and has the of the type .png
-            (e: any) => e.isFile && e.name.toLowerCase().includes('.json') // must be a file and has the of the type .json
-        )
+        // let entries = await workflow_folder.getEntries()
+        async function getFilesInFolder(workflow_entries: any[], folder: any) {
+            const entries = await folder.getEntries();
+            for (let entry of entries) {
+                if (entry.isFolder) {
+                    console.log(`Folder: ${entry}`);
+                    await getFilesInFolder(workflow_entries, entry);  // Recursively get files in subfolders
+                } else if (entry.isFile && entry.name.toLowerCase().includes('.json')){
+                    workflow_entries.push(entry);
+                }
+            }
+        }
+        // const workflow_entries = entries.filter(
+        //     // (e: any) => e.isFile && e.name.toLowerCase().includes('.png') // must be a file and has the of the type .png
+        //     (e: any) => e.isFile && e.name.toLowerCase().includes('.json') // must be a file and has the of the type .json
+        // )
+
+        const workflow_entries: any[] = []
+        await getFilesInFolder(workflow_entries, workflow_folder)
 
         console.log('workflow_entries: ', workflow_entries)
 
