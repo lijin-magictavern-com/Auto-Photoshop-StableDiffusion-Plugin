@@ -94,7 +94,7 @@ export const store = new AStore<AStoreData>({
     use_image_cfg_scale_slider: false,
     extension_type: ExtensionTypeEnum.Auto1111Extension,
     use_sharp_mask: false,
-    use_prompt_shortcut: true,
+    use_prompt_shortcut: false,
     bTurnOffServerStatusAlert:
         JSON.parse(storage.localStorage.getItem('bTurnOffServerStatusAlert')) ||
         false,

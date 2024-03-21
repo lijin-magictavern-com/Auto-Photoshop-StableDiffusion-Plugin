@@ -352,6 +352,7 @@ async function mapPluginSettingsToComfyuiPrompt(
     try {
         // const plugin_param = 'steps'
         plugin_settings = await addMissingSettings(plugin_settings)
+        console.log('plugin_setting2', plugin_settings)
         function mapPluginInputToComfyInput(
             plugin_settings: Record<string, any>,
             plugin_param: string,
@@ -427,6 +428,9 @@ async function generateComfyMode(
         //     mapPluginSettingsToControlNet(plugin_settings)
 
         // console.log('controlnet_settings:', controlnet_settings)
+        console.log('plugin_settings:', plugin_settings)
+        console.log('nodes:', nodes)
+        console.log('mode_map:', mode_map)
         const prompt = await mapPluginSettingsToComfyuiPrompt(
             nodes,
             copyJson(api_prompt),

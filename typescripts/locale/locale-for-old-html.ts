@@ -6,6 +6,7 @@ const elemSelectorForLocale = {
     // tab bar
     '#sp-stable-diffusion-ui-tab sp-label': 'Stable Diffusion',
     '#sp-viewer-tab sp-label': 'Viewer',
+    '#sp-submain-tab sp-label': 'Non-Real-Time',
     '#sp-control_net-tab sp-label': 'ControlNet',
     // '#sp-history-tab sp-label': 'History',
     // '#sp-lexica-tab sp-label': 'Lexica',

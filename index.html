@@ -752,6 +752,9 @@
                 >
                     <sp-label>Stable Diffusion</sp-label>
                 </div>
+                <div class="sp-tab" id="sp-submain-tab">
+                    <sp-label>Submain</sp-label>
+                </div>
                 <div class="sp-tab" id="sp-settings-tab">
                     <sp-label>Settings</sp-label>
                 </div>
@@ -770,6 +773,14 @@
                     >
                 </div>
                 <sp-label slot="label" id="lVersionNumber">v0.0.0</sp-label>
+            </div>
+
+            <div class="sp-tab-page" id="sp-submain-tab-page">
+                <div id="sdTabContainer"></div>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+                    <sp-divider class="line-divider" size="large"></sp-divider>
+
+                    <div class="reactViewerContainer"></div>
             </div>
 
             <div class="sp-tab-page" id="sp-viewer-tab-page">
@@ -1116,7 +1127,7 @@
                 class="sp-tab-page visible"
                 id="sp-stable-diffusion-ui-tab-page"
             >
-                <div id="sdTabContainer"></div>
+                <!-- <div id="sdTabContainer"></div> -->
 
                 <!-- stable diffusion tab page -->
 
