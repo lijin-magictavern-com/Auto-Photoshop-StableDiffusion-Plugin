@@ -514,6 +514,7 @@ export class SearchableMenu extends React.Component<{
     onSelectItemFailure?: any
     // default_value?: string
     // searchQuery: string
+    children?: React.ReactNode
 }> {
     state = {
         selectedItem: this.props.allItems ? this.props.allItems[0] : undefined,
