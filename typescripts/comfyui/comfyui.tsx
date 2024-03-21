@@ -5,6 +5,7 @@ import { observer } from 'mobx-react'
 import { runInAction } from 'mobx'
 import {
     MoveToCanvasSvg,
+    SearchableMenu,
     SliderType,
     SpMenu,
     SpSlider,
@@ -1145,7 +1146,7 @@ function renderInput(
                 <sp-label class="title" style={{ display: 'inline-block' }}>
                     {name}
                 </sp-label>
-                <SpMenu
+                {/* <SpMenu
                     disabled={store.data.can_edit_nodes ? true : void 0}
                     size="m"
                     title={inputs[name]}
@@ -1160,7 +1161,22 @@ function renderInput(
                         console.log('onChange value.item: ', item)
                         inputs[name] = item
                     }}
-                ></SpMenu>
+                ></SpMenu> */}
+                <SearchableMenu
+                allItems={config}
+                placeholder={`Select a ${name}`}
+                selected_item={inputs[name]}
+                onSelectItemFailure={() => {
+                    const default_value =
+                    config[0] || ''
+                    inputs[name] = default_value
+                    return default_value
+                }}
+                onChange={(item: any) => {
+                    inputs[name] = item
+                }}
+                >
+                </SearchableMenu>
             </>
         )
     } else if (type === util.ComfyInputType.TextArea) {
