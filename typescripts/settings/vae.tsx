@@ -47,7 +47,8 @@ export class VAEComponent extends React.Component<{
                     onChange={(id: any, value: any) => {
                         // script_store.setSelectedScript(value.item)
                         console.log('onChange value: ', value)
-                        this.changeVAEModel(value.item)
+                        store.data.current_vae = value.item
+                        // this.changeVAEModel(value.item)
                     }}
                 ></SpMenu>
                 <button
