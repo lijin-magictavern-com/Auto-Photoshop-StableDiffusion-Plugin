@@ -1163,18 +1163,18 @@ function renderInput(
                     }}
                 ></SpMenu> */}
                 <SearchableMenu
-                allItems={config}
-                placeholder={`Select a ${name}`}
-                selected_item={inputs[name]}
-                onSelectItemFailure={() => {
-                    const default_value =
-                    config[0] || ''
-                    inputs[name] = default_value
-                    return default_value
-                }}
-                onChange={(item: any) => {
-                    inputs[name] = item
-                }}
+                    allItems={config}
+                    placeholder={`Select a ${name}`}
+                    selected_item={inputs[name]}
+                    onSelectItemFailure={() => {
+                        const default_value =
+                        config[0] || ''
+                        inputs[name] = default_value
+                        return default_value
+                    }}
+                    onChange={(item: any) => {
+                        inputs[name] = item
+                    }}
                 >
                 </SearchableMenu>
             </>
