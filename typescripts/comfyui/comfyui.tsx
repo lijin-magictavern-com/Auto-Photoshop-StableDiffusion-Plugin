@@ -1112,6 +1112,7 @@ function renderInput(
                         inputs[name] = new_value
 
                         console.log(`${name}: ${e.target.value}`)
+                        console.log(toJS(inputs))
                     }}
                 ></SpTextfield>
             </>
@@ -1536,6 +1537,7 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                                 // Start the progress update
 
                                 util.runRandomSeedScript()
+                                console.log(toJS(store.data.current_prompt2))
                                 let { outputs, separated_outputs } =
                                     await util.postPromptAndGetBase64JsonResult(
                                         toJS(store.data.current_prompt2)
@@ -1793,8 +1795,13 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                             store.data.workflows2
                         ).indexOf(store.data.selected_workflow_name)}
                         onChange={async (id: any, value: any) => {
+                            store.data.current_prompt2 = {}
                             store.data.selected_workflow_name = value.item
-                            loadWorkflow2(store.data.workflows2[value.item])
+                            setTimeout(() => {
+                                loadWorkflow2(
+                                    store.data.workflows2[store.data.selected_workflow_name]
+                                )
+                            }, 200)
                         }}
                     ></SpMenu>{' '}
                     <button

@@ -54,7 +54,7 @@ export class VAEComponent extends React.Component<{
                 <button
                     className="btnSquare refreshButton"
                     title="Refresh VAE Models List"
-                    onClick={this.handleRefresh}
+                    onClick={() => {}}
                 ></button>
             </div>
         )
