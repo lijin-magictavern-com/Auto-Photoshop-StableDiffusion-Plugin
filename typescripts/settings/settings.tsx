@@ -104,7 +104,7 @@ export const store = new AStore<AStoreData>({
     selected_backend: (storage.localStorage.getItem('selected_backend') ||
         'ComfyUI') as 'Automatic1111' | 'ComfyUI',
     comfy_url:
-        storage.localStorage.getItem('comfy_url') || 'https://card-collection.magictavern.com',
+        storage.localStorage.getItem('comfy_url') || 'https://card-collection.magictavern.com:8443',
 })
 
 function onShouldLogToFileChange(event: any) {
@@ -186,7 +186,7 @@ export class Settings extends React.Component<{}> {
                 <sp-label>ComfyUI Url:</sp-label>
                 <SpTextfield
                     type="text"
-                    placeholder="https://card-collection.magictavern.com"
+                    placeholder="https://card-collection.magictavern.com:8443"
                     // value={config.default}
                     value={store.data.comfy_url}
                     onChange={(event: any) => {

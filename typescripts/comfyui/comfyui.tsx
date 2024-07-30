@@ -1538,6 +1538,37 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
 
                                 util.runRandomSeedScript()
                                 console.log(toJS(store.data.current_prompt2))
+                                const now = Date.now()
+                                store.data.lastCall = now
+
+                                const image_data_url =
+                                    await getImageFromCanvas_new()
+
+                                const image_base64 =
+                                    base64UrlToBase64(
+                                        image_data_url!
+                                    )
+
+                                const image_name =
+                                    await reuseOrUploadComfyImage(
+                                        image_base64,
+                                        store.data
+                                            .base64_to_uploaded_images_names,
+                                        'input'
+                                    )
+                                if (image_name) {
+                                    for (const node_id of Object.keys(
+                                        // store.data.sync_from_canvas
+                                        store.data
+                                            .loadImage_loading_method
+                                    )) {
+                                        await onChangeLoadImage(
+                                            node_id,
+                                            image_name,
+                                            'input'
+                                        )
+                                    }
+                                }
                                 let { outputs, separated_outputs } =
                                     await util.postPromptAndGetBase64JsonResult(
                                         toJS(store.data.current_prompt2)
@@ -1558,7 +1589,7 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                     <button
                         className="btnSquare"
                         style={{
-                            display: store.data.can_generate ? void 0 : 'none',
+                            display: 'none',
                         }}
                         onClick={async () => {
                             store.data.infinite_loop = true
