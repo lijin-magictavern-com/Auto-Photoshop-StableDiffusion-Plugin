@@ -1054,15 +1054,7 @@
 
             <div class="sp-tab-page" id="sp-settings-tab-page">
                 <div>
-                    <sp-label>SD Url:</sp-label
-                    ><sp-textfield
-                        id="tiSdUrl"
-                        type="text"
-                        placeholder="http://127.0.0.1:7860"
-                        value=""
-                        style="width: 160px"
-                    ></sp-textfield
-                    ><button
+                    <button
                         class="btnSquare"
                         id="btnSdUrl"
                         style="margin-left: 5px"
@@ -1076,48 +1068,25 @@
                 <div id="settingsVAEContainer"></div>
                 <div id="reactSettingsContainer"></div>
 
-                <div>
-                    <sp-checkbox checked id="chUseOriginalPrompt"
-                        >Restore Original Prompt</sp-checkbox
-                    >
-                </div>
-
                 <sp-checkbox checked id="chUseSilentMode" style="display: none"
                     >Use Silent Mode</sp-checkbox
                 >
                 <sp-radio-group>
-                    <sp-label slot="label"
-                        >Your PC Speed(optimization):</sp-label
-                    >
                     <!-- <sp-label slot="label">Select a Mode:</sp-label> -->
-                    <sp-radio title="" class="rbPCSpeed" value="slow"
+                    <!-- <sp-radio title="" class="rbPCSpeed" value="slow"
                         >Slow PC</sp-radio
                     >
                     <sp-radio title="" class="rbPCSpeed" value="fast" checked
                         >Fast PC</sp-radio
-                    >
+                    > -->
 
                     <!-- <sp-tooltip id="tool_tip" open placement="top">use this when you want to fill empty areas of the canvas</sp-tooltip> -->
                 </sp-radio-group>
                 <!-- <a href="https://colab.research.google.com/drive/1nbcx_WOneRmYv9idBO33pN5CbxXrqZHu?usp=sharing" target="_blank">Don't have GPU, use Colab</a> -->
-                <sp-link
-                    href="https://colab.research.google.com/drive/1nbcx_WOneRmYv9idBO33pN5CbxXrqZHu?usp=sharing"
-                    >Use Colab</sp-link
-                >
 
                 <div>
-                    <sp-textfield
-                        title="copy paste the address to access the folder where the images are stored"
-                        id="tiDocPath"
-                        type="text"
-                        placeholder=""
-                        value=""
-                    >
-                        <sp-label slot="label"
-                            >Folder Path (read only):</sp-label
-                        >
-                    </sp-textfield>
-                    <button class="btnSquare" id="btnGetDocPath">
+                    
+                    <button class="btnSquare" id="btnGetDocPath" style="display: none;">
                         Get Path
                     </button>
                 </div>

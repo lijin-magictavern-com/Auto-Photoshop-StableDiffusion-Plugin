@@ -91,7 +91,7 @@ export async function populateVAE() {
 vaeRoot.render(
     //<React.StrictMode>
     <ErrorBoundary>
-        <VAEComponent></VAEComponent>
+        {/* <VAEComponent></VAEComponent> */}
     </ErrorBoundary>
     //</React.StrictMode>
 )

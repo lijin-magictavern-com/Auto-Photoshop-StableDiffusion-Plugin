@@ -203,7 +203,7 @@ export class Settings extends React.Component<{}> {
                         )
                     }}
                 ></SpTextfield>
-                <sp-radio-group>
+                {/* <sp-radio-group>
                     {['Automatic1111', 'ComfyUI'].map(
                         (backend: any, index: number) => {
                             return (
@@ -453,7 +453,7 @@ export class Settings extends React.Component<{}> {
                     >
                         {Locale('Smart Object')}
                     </sp-checkbox>
-                </div>
+                </div> */}
             </div>
         )
     }

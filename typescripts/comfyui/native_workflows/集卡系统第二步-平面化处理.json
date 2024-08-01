@@ -107,9 +107,9 @@
   },
   "41": {
     "inputs": {
-      "side_length": 1024,
-      "side": "Longest",
-      "upscale_method": "nearest-exact",
+      "side_length": 512,
+      "side": "Shortest",
+      "upscale_method": "lanczos",
       "crop": "disabled",
       "image": [
         "39",
