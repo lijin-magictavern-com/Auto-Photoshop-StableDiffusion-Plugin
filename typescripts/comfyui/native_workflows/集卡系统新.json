@@ -1,0 +1,318 @@
+{
+  "6": {
+    "inputs": {
+      "text": [
+        "58",
+        0
+      ],
+      "clip": [
+        "43",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "30": {
+    "inputs": {
+      "seed": [
+        "49",
+        0
+      ],
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": [
+        "119",
+        0
+      ],
+      "model": [
+        "43",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "67",
+        0
+      ],
+      "latent_image": [
+        "40",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "31": {
+    "inputs": {
+      "samples": [
+        "30",
+        0
+      ],
+      "vae": [
+        "113",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "32": {
+    "inputs": {
+      "images": [
+        "31",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "[Sort0]预览图片"
+    }
+  },
+  "39": {
+    "inputs": {
+      "image": "image.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "40": {
+    "inputs": {
+      "pixels": [
+        "112",
+        0
+      ],
+      "vae": [
+        "113",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "43": {
+    "inputs": {
+      "lora_name": "[XL]MT-Jump-CardCollection-20240826-1246.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1,
+      "model": [
+        "95",
+        0
+      ],
+      "clip": [
+        "114",
+        0
+      ]
+    },
+    "class_type": "Load Lora",
+    "_meta": {
+      "title": "Load Lora"
+    }
+  },
+  "49": {
+    "inputs": {
+      "seed": 655659863826053
+    },
+    "class_type": "APS_Seed",
+    "_meta": {
+      "title": "[Sort1]PS种子"
+    }
+  },
+  "56": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "[Sort2]提示词"
+    }
+  },
+  "57": {
+    "inputs": {
+      "from_translate": "auto",
+      "to_translate": "english",
+      "add_proxies": "disable",
+      "proxies": "",
+      "auth_data": "",
+      "service": "GoogleTranslator [free]",
+      "text": [
+        "56",
+        0
+      ],
+      "Show proxy": "proxy_hide",
+      "Show authorization": "authorization_hide"
+    },
+    "class_type": "DeepTranslatorTextNode",
+    "_meta": {
+      "title": "Deep Translator Text Node"
+    }
+  },
+  "58": {
+    "inputs": {
+      "string_1": [
+        "57",
+        0
+      ],
+      "string_2": [
+        "59",
+        0
+      ]
+    },
+    "class_type": "List of strings [Crystools]",
+    "_meta": {
+      "title": "🪛 List of strings"
+    }
+  },
+  "59": {
+    "inputs": {
+      "text": "by jcc,flat color,masterpiece, best quality,"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️MixlabApp"
+    }
+  },
+  "65": {
+    "inputs": {
+      "from_translate": "auto",
+      "to_translate": "english",
+      "add_proxies": "disable",
+      "proxies": "",
+      "auth_data": "",
+      "service": "GoogleTranslator [free]",
+      "text": [
+        "66",
+        0
+      ],
+      "Show proxy": "proxy_hide",
+      "Show authorization": "authorization_hide"
+    },
+    "class_type": "DeepTranslatorTextNode",
+    "_meta": {
+      "title": "Deep Translator Text Node"
+    }
+  },
+  "66": {
+    "inputs": {
+      "text": "lineart,bear"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️MixlabApp"
+    }
+  },
+  "67": {
+    "inputs": {
+      "text": [
+        "69",
+        0
+      ],
+      "clip": [
+        "43",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "68": {
+    "inputs": {
+      "text": "monochrome,lowres,blurry, extra digit, fewer digits, cropped, worst quality, low quality, normal quality"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️MixlabApp"
+    }
+  },
+  "69": {
+    "inputs": {
+      "string_1": [
+        "65",
+        0
+      ],
+      "string_2": [
+        "68",
+        0
+      ]
+    },
+    "class_type": "List of strings [Crystools]",
+    "_meta": {
+      "title": "🪛 List of strings"
+    }
+  },
+  "95": {
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0_fixvae_V2_fp16.safetensors",
+      "key_opt": "",
+      "mode": "Auto"
+    },
+    "class_type": "CheckpointLoaderSimpleShared //Inspire",
+    "_meta": {
+      "title": "Shared Checkpoint Loader (Inspire)"
+    }
+  },
+  "112": {
+    "inputs": {
+      "side_length": 512,
+      "side": "Shortest",
+      "upscale_method": "lanczos",
+      "crop": "disabled",
+      "image": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "DF_Image_scale_to_side",
+    "_meta": {
+      "title": "Image scale to side"
+    }
+  },
+  "113": {
+    "inputs": {
+      "vae_name": "sdxl_vae1.0.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "114": {
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "95",
+        1
+      ]
+    },
+    "class_type": "CLIPSetLastLayer",
+    "_meta": {
+      "title": "CLIP Set Last Layer"
+    }
+  },
+  "119": {
+    "inputs": {
+      "Value": 1
+    },
+    "class_type": "DF_Float",
+    "_meta": {
+      "title": "[Sort0]重绘幅度"
+    }
+  }
+}
