@@ -6,7 +6,11 @@ export async function requestGet(url: string) {
 
     const full_url = url
     try {
-        let request = await fetch(full_url)
+        let request = await fetch(full_url, {
+            headers: {
+                'mttoken': '',
+            }
+        })
         if (request.status === 404) {
             return null
         }
@@ -46,6 +50,7 @@ export async function requestPost(url: string, payload: any) {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'mttoken': '',
             },
             body: JSON.stringify(payload),
         })
@@ -66,6 +71,7 @@ export async function requestFormDataPost(url: string, payload: any) {
     try {
         var myHeaders = new Headers()
         myHeaders.append('Cookie', 'PHPSESSID=n70fa2vmvm6tfmktf4jmstmd1i')
+        myHeaders.append('mttoken', '')
 
         var formdata = new FormData()
 
@@ -116,6 +122,7 @@ export async function postArrayBuffer(url: string, data: Uint8Array) {
         body: data,
         headers: {
             'Content-Type': 'application/octet-stream', // or whatever type your data should be
+            'mttoken': '',
         },
     })
 
