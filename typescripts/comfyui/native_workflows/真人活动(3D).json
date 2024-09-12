@@ -111,14 +111,14 @@
     },
     "class_type": "VAELoader",
     "_meta": {
-      "title": "[Sort5]加载VAE"
+      "title": "加载VAE"
     }
   },
   "48": {
     "inputs": {
-      "Number": "1"
+      "Value": "1"
     },
-    "class_type": "Float",
+    "class_type": "DF_Float",
     "_meta": {
       "title": "[Sort2]重绘幅度"
     }
@@ -283,7 +283,7 @@
     },
     "class_type": "CheckpointLoaderSimpleShared //Inspire",
     "_meta": {
-      "title": "[Sort0]加载模型"
+      "title": "加载模型"
     }
   },
   "96": {
