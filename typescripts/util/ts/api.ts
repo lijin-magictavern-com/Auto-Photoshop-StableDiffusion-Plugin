@@ -6,10 +6,10 @@ export async function requestGet(url: string) {
 
     const full_url = url
     try {
+        const headers = new Headers()
+        headers.append('mttoken', '')
         let request = await fetch(full_url, {
-            headers: {
-                'mttoken': '',
-            }
+            headers: headers,
         })
         if (request.status === 404) {
             return null

@@ -408,12 +408,14 @@ async function uploadImagePost(
         const full_url = comfyapi.comfy_api.comfy_url + '/upload/image'
         var formData = new FormData()
 
+        const myHeaders = new Headers()
+        myHeaders.append('mttoken', '')
         formData.append('image', buffer, file_name)
         formData.append('type', type)
         formData.append('subfolder', subfolder)
         var requestOptions = {
             method: 'POST',
-            // header: myHeaders,
+            headers: myHeaders,
             body: formData,
         }
         //@ts-ignore
