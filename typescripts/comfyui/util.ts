@@ -8,6 +8,7 @@ import { AStore } from '../main/astore'
 import comfyapi from './comfyapi'
 import { base64UrlToBase64 } from '../util/ts/general'
 import { app } from 'photoshop'
+import settings_tab from '../settings/settings'
 export enum InputTypeEnum {
     NumberField = 'NumberField',
     TextField = 'TextField',
@@ -94,8 +95,44 @@ export const store = new AStore({
     lastCall: 0 as number,
     // sync_from_canvas: {} as Record<string, boolean>,
     loadImage_loading_method: {} as Record<string, ImageLoadingMethod>,
+    muses_token: storage.localStorage.getItem('muses_token') as string | null
 })
 
+export async function fetchData() {
+    try {
+        if (settings_tab.store.data.muses_token) {
+            const res = await fetch('https://muses-test.magictavern.com/api/v1/comfy/getWorkflow',{
+                headers: {
+                    'x-access-token': settings_tab.store.data.muses_token
+                }
+            });
+            const resj = await res.json();
+            console.log('Fetched data:', resj);
+            if (resj.code) {
+                return
+            }
+            for (const item of resj.data) {
+                try {
+                    const response = await fetch(item.url);
+                    const workflowData = await response.json();
+                    store.updateProperty('workflows2', { 
+                        ...store.data.workflows2, 
+                        [item.name]: workflowData 
+                    });
+                    console.log(`成功加载工作流: ${item.name}`);
+                } catch (error) {
+                    console.error(`加载工作流 ${item.name} 时出错:`, error);
+                }
+            }
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+// 执行 fetchData 函数
+fetchData();
 interface ImageLoadingMethod {
     method: 'Manual' | 'Sync From Whole Canvas' | 'Sync From a Layer'
     data?: { layer_id?: number }
@@ -250,6 +287,11 @@ export async function postPromptAndGetBase64JsonResult(
         }
         const prompt_id = res.prompt_id
         const history = await getHistory(prompt_id)
+        if (history.code) {
+            throw new Error(
+                `账号无权限，请重新认证`
+            )
+        }
         const promptInfo = history[prompt_id]
         if (Object.keys(promptInfo.outputs).length === 0) {
             throw new Error(
@@ -409,7 +451,7 @@ async function uploadImagePost(
         var formData = new FormData()
 
         const myHeaders = new Headers()
-        myHeaders.append('mttoken', '')
+        myHeaders.append('x-access-token', settings_tab.store.data.muses_token)
         formData.append('image', buffer, file_name)
         formData.append('type', type)
         formData.append('subfolder', subfolder)
@@ -546,6 +588,7 @@ async function maskExpansion(
     return base64_mask
 }
 export default {
+    fetchData,
     uploadImage,
     uploadImagePost,
     getNodes,

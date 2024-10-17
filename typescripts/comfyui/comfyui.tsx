@@ -43,6 +43,7 @@ import { getSelectionInfoExe } from '../../psapi'
 import { moveImageToLayer } from '../util/ts/io'
 import { reuseOrUploadComfyImage } from './main_ui'
 import { SetLayerColor } from '../util/ts/layer'
+import settings_tab from '../settings/settings'
 
 interface Error {
     type: string
@@ -1324,6 +1325,11 @@ function loadWorkflow2(workflow: any) {
         //2)  get the original order
         store.data.nodes_order = Object.keys(toJS(store.data.current_prompt2))
 
+        if (!store.data.object_info) {
+            throw new Error(
+                `如已认证成功请刷新当前工作流`
+            )
+        }
         //3) get labels for each nodes
         store.data.nodes_label = Object.fromEntries(
             Object.entries(toJS(store.data.current_prompt2)).map(
@@ -1860,6 +1866,10 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                         style={{ marginLeft: '3px' }}
                         onClick={async () => {
                             try {
+                                if (settings_tab.store.data.comfy_url.startsWith('https://muses')) {
+                                    await util.fetchData();
+                                    return
+                                }
                                 const entries = await workflowEntries()
 
                                 if (entries.length > 0) {

@@ -1,4 +1,5 @@
 import { storage } from 'uxp'
+import settings_tab from '../../settings/settings'
 
 declare let g_sd_url: string
 export async function requestGet(url: string) {
@@ -7,7 +8,7 @@ export async function requestGet(url: string) {
     const full_url = url
     try {
         const headers = new Headers()
-        headers.append('mttoken', '')
+        headers.append('x-access-token', settings_tab.store.data.muses_token)
         let request = await fetch(full_url, {
             headers: headers,
         })
@@ -50,7 +51,7 @@ export async function requestPost(url: string, payload: any) {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'mttoken': '',
+                'x-access-token': settings_tab.store.data.muses_token,
             },
             body: JSON.stringify(payload),
         })
@@ -71,7 +72,7 @@ export async function requestFormDataPost(url: string, payload: any) {
     try {
         var myHeaders = new Headers()
         myHeaders.append('Cookie', 'PHPSESSID=n70fa2vmvm6tfmktf4jmstmd1i')
-        myHeaders.append('mttoken', '')
+        myHeaders.append('x-access-token', settings_tab.store.data.muses_token)
 
         var formdata = new FormData()
 
@@ -122,7 +123,7 @@ export async function postArrayBuffer(url: string, data: Uint8Array) {
         body: data,
         headers: {
             'Content-Type': 'application/octet-stream', // or whatever type your data should be
-            'mttoken': '',
+            'x-access-token': settings_tab.store.data.muses_token,
         },
     })
 

@@ -90,8 +90,8 @@ class ComfyAPI {
         try {
             const full_url = `${comfy_url}/object_info`
             const object_info = await requestGet(full_url)
-            if (!object_info)
-                throw `can not request from comfyui url: ${comfy_url}`
+            if (!object_info || object_info.code)
+                throw `can not request from comfyui url`
             return object_info
         } catch (e) {
             console.error(e)

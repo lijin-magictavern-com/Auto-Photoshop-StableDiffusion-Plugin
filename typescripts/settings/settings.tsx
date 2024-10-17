@@ -10,6 +10,7 @@ import { io } from '../util/oldSystem'
 import { reaction } from 'mobx'
 //@ts-ignore
 import { storage } from 'uxp'
+import md5 from 'md5';
 import { ErrorBoundary } from '../util/errorBoundary'
 import { MaskModeEnum, ScriptMode } from '../util/ts/enum'
 import { store as progress_store } from '../session/progress'
@@ -84,6 +85,9 @@ interface AStoreData {
     use_smart_object: boolean
     selected_backend: 'Automatic1111' | 'ComfyUI'
     comfy_url: string
+    username: string
+    password: string
+    muses_token: string
 }
 export const store = new AStore<AStoreData>({
     scale_interpolation_method: interpolationMethods.bilinear,
@@ -104,7 +108,10 @@ export const store = new AStore<AStoreData>({
     selected_backend: (storage.localStorage.getItem('selected_backend') ||
         'ComfyUI') as 'Automatic1111' | 'ComfyUI',
     comfy_url:
-        storage.localStorage.getItem('comfy_url') || 'https://card-collection.magictavern.com:8443',
+        storage.localStorage.getItem('comfy_url') || 'https://muses-test.magictavern.com/api/v1/comfy',
+    username: storage.localStorage.getItem('username') || '',
+    password: storage.localStorage.getItem('password') || '',
+    muses_token: storage.localStorage.getItem('muses_token')
 })
 
 function onShouldLogToFileChange(event: any) {
@@ -156,6 +163,10 @@ interface Options {
     CLIP_stop_at_last_layers: number
 }
 
+interface SettingsState {
+    authStatus: 'success' | 'fail' | 'pending' | null;
+  }
+
 async function getOptions(): Promise<Options | null> {
     const full_url = `${g_sd_url}/sdapi/v1/options`
     try {
@@ -170,6 +181,10 @@ async function getOptions(): Promise<Options | null> {
 
 @observer
 export class Settings extends React.Component<{}> {
+    state: SettingsState = {
+        authStatus: null,
+      };
+
     async componentDidMount(): Promise<void> {
         if (store.data.selected_backend === 'Automatic1111') {
             const options = await getOptions()
@@ -186,7 +201,7 @@ export class Settings extends React.Component<{}> {
                 <sp-label>ComfyUI Url:</sp-label>
                 <SpTextfield
                     type="text"
-                    placeholder="https://card-collection.magictavern.com:8443"
+                    placeholder="https://muses-test.magictavern.com/api/v1/comfy"
                     // value={config.default}
                     value={store.data.comfy_url}
                     onChange={(event: any) => {
@@ -194,8 +209,7 @@ export class Settings extends React.Component<{}> {
 
                         let url = event.target.value.trim() // remove leading and trailing white spaces
                         url = url.replace(/[/\\]$/, '')
-                        console.log(url)
-                        store.data.comfy_url = url
+                        store.data.comfy_url = url || "https://muses-test.magictavern.com/api/v1/comfy"
                         comfyapi.comfy_api.setUrl(store.data.comfy_url)
                         storage.localStorage.setItem(
                             'comfy_url',
@@ -203,257 +217,76 @@ export class Settings extends React.Component<{}> {
                         )
                     }}
                 ></SpTextfield>
-                {/* <sp-radio-group>
-                    {['Automatic1111', 'ComfyUI'].map(
-                        (backend: any, index: number) => {
-                            return (
-                                <sp-radio
-                                    key={index}
-                                    title={backend}
-                                    value={backend}
-                                    onClick={(evt: any) => {
-                                        store.data.selected_backend =
-                                            evt.target.value
-                                        storage.localStorage.setItem(
-                                            'selected_backend',
-                                            store.data.selected_backend
-                                        )
-                                    }}
-                                    checked={
-                                        store.data.selected_backend === backend
-                                            ? true
-                                            : void 0
-                                    }
-                                >
-                                    {backend}
-                                </sp-radio>
-                            )
-                        }
-                    )}
-                </sp-radio-group>
-                <SpMenu
-                    title="select an interploation method for resizing images"
-                    items={Object.keys(interpolationMethods)}
-                    label_item="Select Interpolation Method"
-                    selected_index={Object.keys(interpolationMethods).findIndex(
-                        (key) => {
-                            return (
-                                interpolationMethods[key].photoshop ===
-                                    store.data.scale_interpolation_method
-                                        .photoshop &&
-                                interpolationMethods[key].jimp ===
-                                    store.data.scale_interpolation_method.jimp
-                            )
-                        }
-                    )}
-                    onChange={(id: any, value: any) => {
-                        store.updateProperty(
-                            'scale_interpolation_method',
-                            interpolationMethods[value.item]
-                        )
-                    }}
-                ></SpMenu>
-
-                <div style={{ width: '100%' }}>
-                    <sp-label>{Locale('select language:')}</sp-label>
-                </div>
-                <SpMenu
-                    title="select language"
-                    items={['en_US', 'zh_CN']}
-                    label_item="select language"
-                    selected_index={['en_US', 'zh_CN'].indexOf(
-                        globalStore.Locale
-                    )}
-                    onChange={(id: any, value: any) => {
-                        globalStore.Locale = value.item
-                        localStorage.setItem('last_selected_locale', value.item)
-                        console.log(
-                            localStorage.getItem('last_selected_locale')
-                        )
-                    }}
-                ></SpMenu>
-                <div style={{}}>
-                    <SpCheckBox
-                        style={{
-                            marginRight: '10px',
+                <div>
+                    <sp-label>外部认证:</sp-label>
+                    <br />
+                    <sp-label>用户名:</sp-label>
+                    <SpTextfield
+                        type="text"
+                        placeholder="请输入用户名"
+                        value={store.data.username}
+                        onChange={(event: any) => {
+                            store.data.username = event.target.value.trim();
                         }}
-                        onChange={onShouldLogToFileChange}
-                        checked={store.data.should_log_to_file}
-                    >
-                        {Locale('Log Errors To File')}
-                    </SpCheckBox>
-                </div>
+                    ></SpTextfield>
+                    <br />
+                    <sp-label>密码:</sp-label>
+                    <SpTextfield
+                        type="password"
+                        placeholder="请输入密码"
+                        value={store.data.password}
+                        onChange={(event: any) => {
+                            const hashedPassword = md5(event.target.value);
+                            store.data.password = hashedPassword;
 
-                <sp-radio-group
-                    style={{ display: 'flex' }}
-                    selected={store.data.b_borders_or_corners}
-                    onClick={(event: any) => {
-                        store.data.b_borders_or_corners = event.target.value
-                    }}
-                >
-                    <sp-label slot="label">
-                        {Locale('Mask Layer Mode:')}
-                    </sp-label>
-                    {[
-                        {
-                            label: 'fully transparent',
-                            value: MaskModeEnum.Transparent,
-                        },
-                        { label: 'keep borders', value: MaskModeEnum.Borders },
-                        { label: 'keep corners', value: MaskModeEnum.Corners },
-                    ].map((mode: any, index: number) => {
-                        // console.log('mode:', mode.label, ' index:', index)
-                        return (
-                            <sp-radio
-                                key={`mode-${index}`}
-                                checked={
-                                    store.data.b_borders_or_corners ===
-                                    mode.value
-                                        ? true
-                                        : void 0
+                        }}
+                    ></SpTextfield>
+
+                    <button
+                        className="btnSquare"
+                        onClick={async () => {
+                            try {
+                                storage.localStorage.setItem('username', store.data.username);
+                                storage.localStorage.setItem('password', store.data.password);
+                                const response = await fetch(`https://muses-test.magictavern.com/api/auth/user`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        name: store.data.username,
+                                        pwd: store.data.password,
+                                    }),
+                                });
+                                if (response.status === 200 || response.status === 201) {
+                                    const result = await response.json();
+                                    console.log(result)
+                                    if (result.token) {
+                                        this.setState({ authStatus: 'success' });
+                                        store.data.muses_token = result.token; // 将返回的token存储到store中
+                                        storage.localStorage.setItem('muses_token', result.token);
+                                        // await util.fetchData()
+                                    } else {
+                                        this.setState({ authStatus: 'fail' });
+                                    }
+                                } else {
+                                    this.setState({ authStatus: 'fail' });
                                 }
-                                value={mode.value}
-                            >
-                                {Locale(mode.label)}
-                            </sp-radio>
-                        )
-                    })}
-                </sp-radio-group>
-                <SpCheckBox
-                    style={{
-                        marginRight: '10px',
-                    }}
-                    onChange={(evt: any) => {
-                        progress_store.data.live_progress_image =
-                            evt.target.checked
-                    }}
-                    checked={progress_store.data.live_progress_image}
-                >
-                    {
-                        //@ts-ignore
-                        Locale('Live Progress Image')
-                    }
-                </SpCheckBox>
-                <div>
-                    <sp-checkbox
-                        id="chUseImageCfgScaleSlider"
-                        title="image cfg slider for pix2pix mode"
-                        value={store.data.use_image_cfg_scale_slider}
-                        onClick={(evt: any) => {
-                            store.data.use_image_cfg_scale_slider =
-                                evt.target.checked
-                        }}
-                        style={{ display: 'inline-flex' }}
-                    >
-                        {Locale('Image Cfg Scale Slider')}
-                    </sp-checkbox>
-                </div>
-                <div>
-                    <sp-checkbox
-                        id="chUseSharpMask"
-                        checked={store.data.use_sharp_mask}
-                        onClick={(evt: any) => {
-                            store.data.use_sharp_mask = evt.target.checked
+                            } catch (error) {
+                                console.error('认证过程出错:', error);
+                                this.setState({ authStatus: 'fail' });
+                            }
                         }}
                     >
-                        {Locale('use sharp mask')}
-                    </sp-checkbox>
+                        认证
+                    </button>
+                    {this.state.authStatus === 'success' && (
+                        <div style={{ color: 'green', marginTop: '5px' }}>认证成功</div>
+                    )}
+                    {this.state.authStatus === 'fail' && (
+                        <div style={{ color: 'red', marginTop: '5px' }}>认证失败</div>
+                    )}
                 </div>
-                <div>
-                    <sp-radio-group selected={store.data.extension_type}>
-                        <sp-label slot="label">
-                            {Locale('Select Extension:')}
-                        </sp-label>
-                        {[
-                            ExtensionTypeEnum.ProxyServer,
-                            ExtensionTypeEnum.Auto1111Extension,
-                            ExtensionTypeEnum.None,
-                        ].map((extension_type, index: number) => {
-                            return (
-                                <sp-radio
-                                    key={index}
-                                    title={config[extension_type].title}
-                                    class="rbExtensionType"
-                                    value={config[extension_type].value}
-                                    checked={
-                                        store.data.extension_type ===
-                                        config[extension_type].value
-                                            ? true
-                                            : void 0
-                                    }
-                                    onClick={(evt: any) => {
-                                        store.data.extension_type =
-                                            evt.target.value
-                                    }}
-                                >
-                                    {Locale(config[extension_type].label)}
-                                </sp-radio>
-                            )
-                        })}
-                    </sp-radio-group>
-                </div>
-                <div>
-                    <sp-checkbox
-                        id="chTurnOffServerStatusAlert"
-                        checked={
-                            store.data.bTurnOffServerStatusAlert
-                                ? true
-                                : undefined
-                        }
-                        onClick={(evt: any) => {
-                            store.data.bTurnOffServerStatusAlert =
-                                evt.target.checked
-                            storage.localStorage.setItem(
-                                'bTurnOffServerStatusAlert',
-                                evt.target.checked
-                            )
-                        }}
-                    >
-                        {Locale('Turn Off Server Status Alert')}
-                    </sp-checkbox>
-                </div>
-                <div>
-                    <SpSlider
-                        show-value="false"
-                        min={1}
-                        max={12}
-                        value={store.data.CLIP_stop_at_last_layers}
-                        onInput={(evt: any) => {
-                            store.data.CLIP_stop_at_last_layers =
-                                evt.target.value
-                        }}
-                        onChange={async (evt: any) => {
-                            console.log(
-                                'should update clip skip through the option endpoint'
-                            )
-                            await postOptions({
-                                CLIP_stop_at_last_layers:
-                                    store.data.CLIP_stop_at_last_layers,
-                            })
-                        }}
-                        title="clip skip: use 1 for none, 2 for skipping one layer"
-                    >
-                        <sp-label slot="label">
-                            {Locale('Clip Skip: ')}
-                        </sp-label>
-                        <sp-label slot="label">
-                            {store.data.CLIP_stop_at_last_layers}
-                        </sp-label>
-                    </SpSlider>
-                </div>
-                <div>
-                    <sp-checkbox
-                        checked={store.data.use_smart_object ? true : undefined}
-                        id="chUseSmartObject"
-                        onClick={(evt: any) => {
-                            store.data.use_smart_object = evt.target.checked
-                                ? true
-                                : false
-                        }}
-                    >
-                        {Locale('Smart Object')}
-                    </sp-checkbox>
-                </div> */}
             </div>
         )
     }

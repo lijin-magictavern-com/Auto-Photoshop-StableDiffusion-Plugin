@@ -570,17 +570,6 @@ g_generation_session.mode = generationMode['Txt2Img']
 
 //********** End: global variables */
 
-document
-    .getElementById('sp-extras-tab')
-    .addEventListener('click', async (evt) => {
-        try {
-            sd_tab_store.updateProperty('mode', 'upscale')
-
-            await postModeSelection() // do things after selection
-        } catch (e) {
-            console.warn(e)
-        }
-    })
 //REFACTOR: move to events.js
 document
     .getElementById('sp-stable-diffusion-ui-tab')

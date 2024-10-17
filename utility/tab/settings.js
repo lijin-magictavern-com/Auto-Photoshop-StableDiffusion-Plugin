@@ -13,13 +13,6 @@ document.getElementById('btnGetDocPath').addEventListener('click', async () => {
     await shell.openPath(doc_entry.nativePath)
 })
 
-document.getElementById('btnSdUrl').addEventListener('click', async () => {
-    //change the sdUrl in server in proxy server
-    // console.log('you clicked btnSdUrl')
-    let new_sd_url = document.getElementById('tiSdUrl').value
-    changeSdUrl(new_sd_url)
-})
-
 function getSdUrlHtml() {
     let sd_url = document.getElementById('tiSdUrl').value
     return sd_url
@@ -79,12 +72,6 @@ function getUseOriginalPrompt() {
     ).checked
     return b_use_original_prompt
 }
-
-document
-    .getElementById('btnSaveSettingsTabs')
-    .addEventListener('click', async () => {
-        await saveSettings()
-    })
 
 module.exports = {
     setUseSharpMask,
