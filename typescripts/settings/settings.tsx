@@ -108,7 +108,7 @@ export const store = new AStore<AStoreData>({
     selected_backend: (storage.localStorage.getItem('selected_backend') ||
         'ComfyUI') as 'Automatic1111' | 'ComfyUI',
     comfy_url:
-        storage.localStorage.getItem('comfy_url') || 'https://muses-test.magictavern.com/api/v1/comfy',
+        storage.localStorage.getItem('comfy_url_new') || 'https://muses.magictavern.com/api/v1/comfy',
     username: storage.localStorage.getItem('username') || '',
     password: storage.localStorage.getItem('password') || '',
     muses_token: storage.localStorage.getItem('muses_token')
@@ -201,18 +201,19 @@ export class Settings extends React.Component<{}> {
                 <sp-label>ComfyUI Url:</sp-label>
                 <SpTextfield
                     type="text"
-                    placeholder="https://muses-test.magictavern.com/api/v1/comfy"
+                    placeholder="https://muses.magictavern.com/api/v1/comfy"
                     // value={config.default}
                     value={store.data.comfy_url}
+                    disabled={true} //外包专供
                     onChange={(event: any) => {
                         // store.data.search_query = event.target.value
 
                         let url = event.target.value.trim() // remove leading and trailing white spaces
                         url = url.replace(/[/\\]$/, '')
-                        store.data.comfy_url = url || "https://muses-test.magictavern.com/api/v1/comfy"
+                        store.data.comfy_url = url || "https://muses.magictavern.com/api/v1/comfy"
                         comfyapi.comfy_api.setUrl(store.data.comfy_url)
                         storage.localStorage.setItem(
-                            'comfy_url',
+                            'comfy_url_new',
                             store.data.comfy_url
                         )
                     }}
@@ -248,7 +249,7 @@ export class Settings extends React.Component<{}> {
                             try {
                                 storage.localStorage.setItem('username', store.data.username);
                                 storage.localStorage.setItem('password', store.data.password);
-                                const response = await fetch(`https://muses-test.magictavern.com/api/auth/user`, {
+                                const response = await fetch(`https://muses.magictavern.com/api/auth/user`, {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',

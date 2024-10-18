@@ -101,7 +101,7 @@ export const store = new AStore({
 export async function fetchData() {
     try {
         if (settings_tab.store.data.muses_token) {
-            const res = await fetch('https://muses-test.magictavern.com/api/v1/comfy/getWorkflow',{
+            const res = await fetch('https://muses.magictavern.com/api/v1/comfy/getWorkflow',{
                 headers: {
                     'x-access-token': settings_tab.store.data.muses_token
                 }
