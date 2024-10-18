@@ -1868,6 +1868,7 @@ class ComfyWorkflowComponent extends React.Component<{}, { value?: number }> {
                             try {
                                 if (settings_tab.store.data.comfy_url.startsWith('https://muses')) {
                                     await util.fetchData();
+                                    store.data.object_info = await comfyapi.comfy_api.init(true)
                                     return
                                 }
                                 const entries = await workflowEntries()

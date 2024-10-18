@@ -1626,18 +1626,18 @@ function switchMenu(rb) {
     try {
         const contianer_class = rb.parentElement.dataset['container-class']
         const radio_group = rb.parentElement
-        document
-            .getElementById(tab_button_name)
-            .addEventListener('click', () => {
-                document.getElementById(tab_button_name)
-                const option_container = document
-                    .getElementById(tab_page_name)
-                    .querySelector(`.${contianer_class}`)
-                // .querySelector('.subTabOptionsContainer')
+        // document
+        //     .getElementById(tab_button_name)
+        //     .addEventListener('click', () => {
+        //         document.getElementById(tab_button_name)
+        //         const option_container = document
+        //             .getElementById(tab_page_name)
+        //             .querySelector(`.${contianer_class}`)
+        //         // .querySelector('.subTabOptionsContainer')
 
-                rb.checked = true
-                option_container.appendChild(radio_group)
-            })
+        //         rb.checked = true
+        //         option_container.appendChild(radio_group)
+        //     })
 
         rb.onclick = () => {
             document.getElementById(tab_button_name).click()
@@ -1732,18 +1732,18 @@ function switchMenu_new(rb) {
                 'container-class'
             ] //input_option.li.ul.div.dataset['container-class']
         const radio_group = rb.parentElement.parentElement.parentElement //radio_group in this case is ul
-        document
-            .getElementById(tab_button_name)
-            .addEventListener('click', () => {
-                document.getElementById(tab_button_name)
-                const option_container = document
-                    .getElementById(tab_page_name)
-                    .querySelector(`.${contianer_class}`)
-                // .querySelector('.subTabOptionsContainer')
+        // document
+        //     .getElementById(tab_button_name)
+        //     .addEventListener('click', () => {
+        //         document.getElementById(tab_button_name)
+        //         const option_container = document
+        //             .getElementById(tab_page_name)
+        //             .querySelector(`.${contianer_class}`)
+        //         // .querySelector('.subTabOptionsContainer')
 
-                rb.checked = true
-                option_container.appendChild(radio_group)
-            })
+        //         rb.checked = true
+        //         option_container.appendChild(radio_group)
+        //     })
 
         rb.parentElement.onclick = () => {
             document.getElementById(tab_button_name).click()
@@ -1764,9 +1764,9 @@ document.getElementsByClassName('sub-menu-tab-class').forEach((element) => {
     // })
     // switchMenu_new(element)
 })
-Array.from(document.querySelectorAll('.rbSubTab')).forEach((rb) => {
-    switchMenu(rb)
-})
+// Array.from(document.querySelectorAll('.rbSubTab')).forEach((rb) => {
+//     switchMenu(rb)
+// })
 
 // document.getElementById('scrollToViewer').addEventListener('click', () => {
 

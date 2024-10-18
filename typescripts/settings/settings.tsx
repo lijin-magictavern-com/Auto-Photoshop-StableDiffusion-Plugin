@@ -268,12 +268,18 @@ export class Settings extends React.Component<{}> {
                                         storage.localStorage.setItem('muses_token', result.token);
                                         // await util.fetchData()
                                     } else {
+                                        store.data.muses_token = ''
+                                        storage.localStorage.setItem('muses_token', '');
                                         this.setState({ authStatus: 'fail' });
                                     }
                                 } else {
+                                    store.data.muses_token = ''
+                                    storage.localStorage.setItem('muses_token', '');
                                     this.setState({ authStatus: 'fail' });
                                 }
                             } catch (error) {
+                                store.data.muses_token = ''
+                                storage.localStorage.setItem('muses_token', '');
                                 console.error('认证过程出错:', error);
                                 this.setState({ authStatus: 'fail' });
                             }
